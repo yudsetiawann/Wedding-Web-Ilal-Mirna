@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Undangan Pernikahan Mirna & Ilal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "wd-cream": "#F9F7F2",
+              "wd-gold": "#C6A87C",
+              "wd-sage": "#9FB8AD",
+              "wd-dark": "#4A4A4A",
+              "wd-green-dark": "#2F3E32",
+            },
+            fontFamily: {
+              display: ["Great Vibes", "cursive"],
+              serif: ["Cormorant Garamond", "serif"],
+              sans: ["Montserrat", "sans-serif"],
+            },
+            backgroundImage: {
+              "paper-texture":
+                "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjRjlGN0YyIi8+CjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNDNkE4N0MiIG9wYWNpdHk9IjAuMSIvPgo8L3N2Zz4=')",
+            },
+            animation: {
+              float: "float 6s ease-in-out infinite",
+              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              "spin-slow": "spin 12s linear infinite",
+            },
+            keyframes: {
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-15px)" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Custom Styles for depth */
+      body {
+        background-color: #f9f7f2;
+      }
+
+      /* Noise Texture Overlay */
+      .texture-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        z-index: 40;
+      }
+
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+      }
+
+      .gold-text-gradient {
+        background: linear-gradient(to right, #c6a87c, #e5d1a6, #c6a87c);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      /* Ornament Positioning */
+      .corner-tl {
+        top: 0;
+        left: 0;
+        transform: rotate(0deg);
+      }
+      .corner-tr {
+        top: 0;
+        right: 0;
+        transform: rotate(90deg);
+      }
+      .corner-br {
+        bottom: 0;
+        right: 0;
+        transform: rotate(180deg);
+      }
+      .corner-bl {
+        bottom: 0;
+        left: 0;
+        transform: rotate(-90deg);
+      }
+
+      /* Animation Classes */
+      .fade-in-up {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 1s ease-out,
+          transform 1s ease-out;
+      }
+      .fade-in-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body class="text-wd-dark overflow-x-hidden relative" id="main-body">
+    <div class="texture-overlay"></div>
+
+    <button id="music-btn" class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-wd-green-dark text-wd-gold border border-wd-gold shadow-xl flex items-center justify-center hidden hover:scale-110 transition-transform duration-300">
+      <i class="fas fa-music"></i>
+    </button>
+    <audio id="bg-music" loop>
+      <source src="https://assets.mixkit.co/music/preview/mixkit-wedding-bells-soft-piano-688.mp3" type="audio/mpeg" />
+    </audio>
+
+    <svg style="display: none">
+      <symbol id="leaf-ornament" viewBox="0 0 100 100">
+        <path d="M0,0 C30,0 50,20 50,50 C50,20 70,0 100,0 C70,0 80,30 80,60 C80,90 60,100 50,80 C40,100 20,90 20,60 C20,30 30,0 0,0 Z" fill="#9FB8AD" opacity="0.3" />
+        <path d="M10,10 Q40,10 40,40 Q40,10 70,10" fill="none" stroke="#C6A87C" stroke-width="1" />
+        <circle cx="40" cy="40" r="3" fill="#C6A87C" />
+      </symbol>
+      <symbol id="floral-corner" viewBox="0 0 200 200">
+        <path d="M0,0 L100,0 C150,0 150,50 150,100 L150,120 C140,90 120,80 100,80 C70,80 60,100 60,130 C60,100 40,90 0,90 Z" fill="#9FB8AD" opacity="0.2" />
+        <path d="M0,10 L80,10 C120,10 120,50 120,90" fill="none" stroke="#C6A87C" stroke-width="1.5" />
+        <path d="M10,0 L10,80 C10,120 50,120 90,120" fill="none" stroke="#C6A87C" stroke-width="1.5" />
+        <circle cx="120" cy="90" r="4" fill="#C6A87C" />
+        <circle cx="90" cy="120" r="4" fill="#C6A87C" />
+      </symbol>
+    </svg>
+
+    <section id="opening-cover" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-wd-cream text-center transition-all duration-1000 ease-in-out">
+      <div class="absolute inset-0 bg-paper-texture opacity-50"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-wd-cream/50 to-wd-sage/10"></div>
+
+      <svg class="absolute top-0 left-0 w-32 h-32 md:w-48 md:h-48 text-wd-sage opacity-50 corner-tl"><use href="#floral-corner"></use></svg>
+      <svg class="absolute bottom-0 right-0 w-32 h-32 md:w-48 md:h-48 text-wd-sage opacity-50 corner-br"><use href="#floral-corner"></use></svg>
+
+      <div class="relative z-10 p-8">
+        <h3 class="font-sans text-sm tracking-[0.3em] text-wd-dark mb-4 uppercase">The Wedding Of</h3>
+
+        <div class="relative mb-6">
+          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 border border-wd-gold/30 rounded-full animate-spin-slow"></div>
+          <h1 class="font-display text-6xl md:text-8xl text-wd-green-dark leading-tight relative">
+            Mirna <br />
+            <span class="text-4xl md:text-5xl text-wd-gold">&</span> <br />
+            Ilal
+          </h1>
+        </div>
+
+        <div class="glass-panel px-8 py-6 rounded-t-full rounded-b-xl max-w-sm mx-auto mt-8 transform transition hover:scale-105 duration-500">
+          <p class="font-serif italic text-wd-dark mb-2">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+          <h2 id="guest-name" class="font-serif text-2xl font-bold text-wd-green-dark capitalize mb-4 min-h-[2rem]"></h2>
+          <button id="btn-open" class="bg-wd-green-dark text-wd-cream px-8 py-2 rounded-full font-sans text-xs tracking-widest uppercase hover:bg-wd-gold transition-colors duration-300 shadow-lg flex items-center gap-2 mx-auto">
+            <i class="fas fa-envelope"></i> Buka Undangan
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <main id="main-content" class="hidden opacity-0 transition-opacity duration-1000">
+      <section class="min-h-screen relative flex items-center justify-center overflow-hidden py-20">
+        <div class="absolute inset-0 bg-wd-cream"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-wd-sage/20"></div>
+
+        <svg class="absolute top-0 right-0 w-40 h-40 opacity-40 corner-tr"><use href="#floral-corner"></use></svg>
+        <svg class="absolute bottom-0 left-0 w-40 h-40 opacity-40 corner-bl"><use href="#floral-corner"></use></svg>
+
+        <div class="relative z-10 text-center px-4 fade-in-up">
+          <p class="font-sans text-wd-gold tracking-widest uppercase mb-4 text-xs md:text-sm">We Are Getting Married</p>
+
+          <div class="border-y border-wd-gold/40 py-8 px-12 md:px-20 bg-white/30 backdrop-blur-sm relative">
+            <div class="absolute top-2 left-1/2 transform -translate-x-1/2 w-px h-6 bg-wd-gold"></div>
+            <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-px h-6 bg-wd-gold"></div>
+
+            <h1 class="font-display text-7xl md:text-9xl text-wd-green-dark">Mirna</h1>
+            <span class="font-serif text-4xl text-wd-gold italic block my-2">&</span>
+            <h1 class="font-display text-7xl md:text-9xl text-wd-green-dark">Ilal</h1>
+          </div>
+
+          <div class="mt-8 flex justify-center gap-4 text-wd-dark font-serif">
+            <div class="text-center">
+              <span class="block text-3xl font-bold text-wd-gold">24</span>
+              <span class="block text-sm uppercase tracking-wider">Maret</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-wd-gold">
+          <i class="fas fa-chevron-down"></i>
+        </div>
+      </section>
+
+      <section class="py-24 px-6 relative bg-white">
+        <div class="max-w-3xl mx-auto text-center relative z-10 fade-in-up">
+          <img src="img/quran.png" class="h-10 mx-auto mb-6 opacity-80" alt="Icon" />
+
+          <div class="relative p-8 md:p-12 border border-wd-sage/30 m-4 rounded-tl-[3rem] rounded-br-[3rem]">
+            <div class="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/leaf.png')]"></div>
+
+            <p class="font-serif text-xl md:text-2xl text-wd-dark italic leading-relaxed">
+              "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
+            </p>
+            <p class="font-sans font-bold text-xs text-wd-gold mt-6 tracking-widest uppercase">— Q.S. Ar-Rum: 21 —</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-24 px-4 bg-wd-cream relative overflow-hidden">
+        <div class="absolute top-1/2 left-0 transform -translate-y-1/2 w-full h-2/3 bg-wd-sage/10 -skew-y-3 z-0"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto">
+          <div class="text-center mb-16 fade-in-up">
+            <h2 class="font-display text-5xl text-wd-green-dark mb-2">Rangkaian Acara</h2>
+            <div class="h-px w-24 bg-wd-gold mx-auto"></div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-8">
+            <div class="fade-in-up glass-panel p-8 md:p-10 text-center rounded-xl relative hover:shadow-xl transition-shadow duration-300">
+              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-wd-gold to-transparent"></div>
+              <i class="fas fa-signature text-4xl text-wd-gold mb-4"></i>
+              <h3 class="font-serif text-3xl font-bold text-wd-green-dark mb-2">Akad Nikah</h3>
+              <p class="font-sans text-wd-sage font-medium mb-6 text-sm">PUKUL 08:00 WIB - 10:00 WIB</p>
+
+              <div class="h-px w-full bg-wd-dark/10 mb-6"></div>
+
+              <p class="font-serif text-lg text-wd-dark leading-relaxed">
+                <strong>Kediaman Mempelai Wanita</strong><br />
+                Kp. Cibatu Kidul RT/RW 003/004<br />
+                <span class="text-sm italic text-gray-500">Desa Jayaputra, Kec. Sariwangi</span>
+              </p>
+              <a href="https://maps.app.goo.gl/DecLnaP9fDvxLAAw9" class="inline-block mt-6 text-xs text-wd-gold border border-wd-gold px-4 py-2 rounded hover:bg-wd-gold hover:text-white transition">
+                <i class="fas fa-map-marker-alt mr-1"></i> Google Maps
+              </a>
+            </div>
+
+            <div class="fade-in-up glass-panel p-8 md:p-10 text-center rounded-xl relative hover:shadow-xl transition-shadow duration-300" style="transition-delay: 200ms">
+              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-wd-gold to-transparent"></div>
+              <i class="fas fa-glass-cheers text-4xl text-wd-gold mb-4"></i>
+              <h3 class="font-serif text-3xl font-bold text-wd-green-dark mb-2">Resepsi</h3>
+              <p class="font-sans text-wd-sage font-medium mb-6 text-sm">PUKUL 10:00 WIB - 14:00</p>
+
+              <div class="h-px w-full bg-wd-dark/10 mb-6"></div>
+
+              <p class="font-serif text-lg text-wd-dark leading-relaxed">
+                <strong>Kediaman Mempelai Wanita</strong><br />
+                Kp. Cibatu Kidul RT/RW 003/004<br />
+                <span class="text-sm italic text-gray-500">Desa Jayaputra, Kec. Sariwangi</span>
+              </p>
+              <a href="#" class="inline-block mt-6 text-xs text-wd-gold border border-wd-gold px-4 py-2 rounded hover:bg-wd-gold hover:text-white transition"> <i class="fas fa-map-marker-alt mr-1"></i> Google Maps </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-20 bg-wd-green-dark text-wd-cream relative">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#c6a87c 1px, transparent 1px); background-size: 30px 30px"></div>
+
+        <div class="relative z-10 text-center px-4 fade-in-up">
+          <h2 class="font-display text-4xl md:text-5xl mb-10 text-wd-gold">Menghitung Hari</h2>
+
+          <div id="countdown" class="flex flex-wrap justify-center gap-4 md:gap-8 max-w-4xl mx-auto"></div>
+        </div>
+      </section>
+
+      <section class="py-20 px-4 relative">
+        <div class="max-w-3xl mx-auto text-center fade-in-up">
+          <h2 class="font-display text-5xl text-wd-green-dark mb-4">Wedding Gift</h2>
+          <p class="font-serif text-gray-600 mb-10 px-4">Doa restu Anda merupakan karunia yang sangat berarti bagi kami. Dan jika memberi adalah ungkapan tanda kasih Anda, Anda dapat memberi kado secara cashless.</p>
+
+          <div class="grid md:grid-cols-2 gap-6 px-4">
+            <div class="glass-panel p-6 rounded-xl border border-wd-gold/30 relative group hover:-translate-y-1 transition-transform duration-300">
+              <div class="flex justify-between items-start mb-4">
+                <img src="img/BRI.png" alt="BRI" class="h-8 object-contain" />
+                <i class="fas fa-chip text-wd-gold/50 text-2xl"></i>
+              </div>
+              <div class="text-left mb-4">
+                <p class="text-xs text-gray-500 tracking-widest uppercase mb-1">Nomor Rekening</p>
+                <h3 id="rek-1" class="font-mono text-2xl text-wd-dark tracking-wider">4367 0104 2779 538</h3>
+                <p class="font-serif text-wd-green-dark font-bold mt-1">Mirna Rohimah</p>
+              </div>
+              <button onclick="copyToClipboard('rek-1', '1234567890')" class="w-full bg-wd-gold text-white py-2 rounded flex items-center justify-center gap-2 hover:bg-wd-green-dark transition-colors text-sm uppercase tracking-wide">
+                <i class="fas fa-copy"></i> Salin Nomor
+              </button>
+            </div>
+
+            <div class="glass-panel p-6 rounded-xl border border-wd-gold/30 relative group hover:-translate-y-1 transition-transform duration-300">
+              <div class="flex justify-between items-start mb-4">
+                <img src="img/mandiri.png" alt="Mandiri" class="h-8 object-contain" />
+                <i class="fas fa-chip text-wd-gold/50 text-2xl"></i>
+              </div>
+              <div class="text-left mb-4">
+                <p class="text-xs text-gray-500 tracking-widest uppercase mb-1">Nomor Rekening</p>
+                <h3 id="rek-2" class="font-mono text-2xl text-wd-dark tracking-wider">1770005328825</h3>
+                <p class="font-serif text-wd-green-dark font-bold mt-1">Mirna Rohimah</p>
+              </div>
+              <button onclick="copyToClipboard('rek-2', '0987654321')" class="w-full bg-wd-gold text-white py-2 rounded flex items-center justify-center gap-2 hover:bg-wd-green-dark transition-colors text-sm uppercase tracking-wide">
+                <i class="fas fa-copy"></i> Salin Nomor
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-20 px-4 bg-wd-cream relative">
+        <div class="absolute inset-0 opacity-30" style="background-image: url(&quot;https://www.transparenttextures.com/patterns/cubes.png&quot;)"></div>
+
+        <div class="max-w-2xl mx-auto relative z-10 fade-in-up">
+          <div class="text-center mb-10">
+            <h2 class="font-display text-4xl text-wd-green-dark">Kirimkan Ucapan</h2>
+            <div class="h-px w-20 bg-wd-gold mx-auto mt-2"></div>
+          </div>
+
+          <div class="glass-panel p-8 rounded-xl mb-10">
+            <form id="wishes-form" class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-wd-sage uppercase mb-2">Nama Anda</label>
+                <input type="text" id="sender-name" class="w-full bg-white/50 border border-wd-gold/30 rounded p-3 focus:outline-none focus:border-wd-gold transition font-serif" placeholder="Tulis nama anda..." required />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-wd-sage uppercase mb-2">Ucapan & Doa</label>
+                <textarea
+                  id="sender-message"
+                  rows="3"
+                  class="w-full bg-white/50 border border-wd-gold/30 rounded p-3 focus:outline-none focus:border-wd-gold transition font-serif"
+                  placeholder="Berikan ucapan terbaik..."
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="w-full bg-wd-green-dark text-wd-cream py-3 rounded font-sans uppercase tracking-widest text-xs hover:bg-wd-gold transition shadow-lg"><i class="fas fa-paper-plane mr-2"></i> Kirim Ucapan</button>
+            </form>
+          </div>
+
+          <div class="glass-panel p-6 rounded-xl">
+            <h3 class="font-serif text-xl text-wd-dark mb-4 flex items-center gap-2"><i class="fas fa-comments text-wd-gold"></i> Pesan dari Sahabat</h3>
+            <div id="wishes-list" class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+              <div class="text-center text-gray-400 italic text-sm py-4">Belum ada ucapan. Jadilah yang pertama!</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div
+        id="toast"
+        class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-wd-green-dark text-white px-6 py-3 rounded-full shadow-2xl z-[60] flex items-center gap-3 transition-all duration-300 opacity-0 translate-y-10 pointer-events-none"
+      >
+        <i class="fas fa-check-circle text-wd-gold"></i>
+        <span class="font-sans text-sm tracking-wide">Nomor berhasil disalin!</span>
+      </div>
+
+      <section class="py-24 px-6 bg-white relative text-center">
+        <svg class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-64 h-32 opacity-20 text-wd-gold"><use href="#leaf-ornament"></use></svg>
+
+        <div class="fade-in-up max-w-2xl mx-auto">
+          <p class="font-serif text-lg text-gray-600 mb-8 leading-relaxed">Kehadiran dan doa restu Bapak/Ibu/Saudara/i merupakan kado terindah bagi kami. Terima kasih atas segala perhatian dan doanya.</p>
+          <h3 class="font-sans text-sm tracking-widest uppercase text-wd-gold mb-4">Kami yang berbahagia</h3>
+          <h2 class="font-display text-5xl text-wd-green-dark mb-2">Mirna & Ilal</h2>
+          <p class="text-sm text-gray-500 mt-2">Beserta Keluarga Besar</p>
+        </div>
+      </section>
+
+      <footer class="bg-wd-cream py-6 text-center border-t border-wd-gold/20">
+        <p class="text-xs font-sans text-gray-400">&copy; 2026 Mirna & Ilal Wedding</p>
+      </footer>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
