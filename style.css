@@ -1,66 +1,75 @@
-/* Custom Styles for depth */
-body {
-  background-color: #f9f7f2;
+/* Import Google Fonts handled in HTML for performance */
+
+/* Custom Scrollbar (Slim & Elegant) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0b101a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
 }
 
-/* Noise Texture Overlay */
-.texture-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-  z-index: 40;
+/* Animations Keyframes */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
 }
 
-.glass-panel {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+@keyframes shine {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
 }
 
-.gold-text-gradient {
-  background: linear-gradient(to right, #c6a87c, #e5d1a6, #c6a87c);
-  -webkit-background-clip: text;
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Utilities */
+.text-gold-shimmer {
+  background: linear-gradient(to right, #bf953f 20%, #fcf6ba 40%, #fbf5b7 60%, #aa771c 80%);
+  background-size: 200% auto;
+  color: #000;
   background-clip: text;
-  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 4s linear infinite;
 }
 
-/* Ornament Positioning */
-.corner-tl {
-  top: 0;
-  left: 0;
-  transform: rotate(0deg);
-}
-.corner-tr {
-  top: 0;
-  right: 0;
-  transform: rotate(90deg);
-}
-.corner-br {
-  bottom: 0;
-  right: 0;
-  transform: rotate(180deg);
-}
-.corner-bl {
-  bottom: 0;
-  left: 0;
-  transform: rotate(-90deg);
-}
-
-/* Animation Classes */
+/* Transition Classes */
 .fade-in-up {
   opacity: 0;
-  transform: translateY(40px);
-  transition:
-    opacity 1s ease-out,
-    transform 1s ease-out;
+  transform: translateY(40px) scale(0.95);
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
 .fade-in-up.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+}
+
+/* Custom Scrollbar for Wishes List */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.5);
+  border-radius: 4px;
 }
