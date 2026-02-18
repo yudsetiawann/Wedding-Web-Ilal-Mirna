@@ -343,12 +343,13 @@
             <form id="wishes-form" class="space-y-4">
               <div>
                 <label class="block text-xs font-bold text-wd-sage uppercase mb-2">Nama Anda</label>
-                <input type="text" id="sender-name" class="w-full bg-white/50 border border-wd-gold/30 rounded p-3 focus:outline-none focus:border-wd-gold transition font-serif" placeholder="Tulis nama anda..." required />
+                <input type="text" id="sender-name" name="name" class="w-full bg-white/50 border border-wd-gold/30 rounded p-3 focus:outline-none focus:border-wd-gold transition font-serif" placeholder="Tulis nama anda..." required />
               </div>
               <div>
                 <label class="block text-xs font-bold text-wd-sage uppercase mb-2">Ucapan & Doa</label>
                 <textarea
                   id="sender-message"
+                  name="message"
                   rows="3"
                   class="w-full bg-white/50 border border-wd-gold/30 rounded p-3 focus:outline-none focus:border-wd-gold transition font-serif"
                   placeholder="Berikan ucapan terbaik..."
