@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbycg2ah5TiOnN8fIHoNDixOC1ShGOTZO7AJG41BbrLmRfi1hrCKxZq1J9chi8x7laAm/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbw7mGeGdY4h_IXBX9E3qNkmNNSLIe2ktl0XJ7AgDTJKQ2hHhJ6EwxX6HoA0KE7KN7rBEQ/exec";
 
     // 2. Kirim Data
     fetch(scriptURL, { method: "POST", body: new FormData(wishesForm) })
