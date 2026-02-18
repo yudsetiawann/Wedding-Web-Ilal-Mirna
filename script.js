@@ -167,127 +167,124 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3000);
   }
 
-  // --- 7. FITUR UCAPAN (GUEST BOOK - SIMULASI) ---
-  /* CATATAN TEKNIS:
-     Kode di bawah ini menggunakan ARRAY LOKAL (hilang saat refresh) untuk demo UI.
-     Untuk menyimpan permanen (agar semua tamu bisa lihat), Anda harus menghubungkannya
-     ke Google Sheets atau Database. Saya sertakan logika simulasinya.
-  */
-
+  // --- 7. FITUR UCAPAN (GUEST BOOK - REALTIME) ---
   const wishesForm = document.getElementById("wishes-form");
   const wishesList = document.getElementById("wishes-list");
 
-  // Data Dummy Awal (Contoh)
-  let wishesData = [{ name: "Admin", message: "Selamat menempuh hidup baru! Semoga samawa.", date: "Baru saja" }];
+  // Masukkan URL Google Script kamu di sini
+  const scriptURL = "https://script.google.com/macros/s/AKfycbyOgtwuFp8fj2vM4dVvyPTOHiM7yNgZu1n4vz3s_uSEIs8zOzNIdRZjhJi7vVU_JlIxZg/exec";
 
-  // Fungsi Render List Ucapan
-  function renderWishes() {
-    wishesList.innerHTML = ""; // Bersihkan list
+  // A. Fungsi Mengambil Data dari Google Sheet (Load saat refresh)
+  async function loadWishes() {
+    wishesList.innerHTML = '<div class="text-center text-gray-500 text-xs py-4"><i class="fas fa-spinner fa-spin"></i> Memuat ucapan...</div>';
 
-    if (wishesData.length === 0) {
-      wishesList.innerHTML = '<div class="text-center text-gray-400 italic text-sm py-4">Belum ada ucapan.</div>';
-      return;
+    try {
+      const response = await fetch(scriptURL);
+      const data = await response.json();
+
+      wishesList.innerHTML = ""; // Bersihkan loading
+
+      if (data.length === 0) {
+        wishesList.innerHTML = '<div class="text-center text-gray-400 italic text-sm py-4">Belum ada ucapan. Jadilah yang pertama!</div>';
+      } else {
+        data.forEach((wish) => {
+          addWishToDOM(wish.name, wish.message, wish.date);
+        });
+      }
+    } catch (error) {
+      console.error("Gagal memuat:", error);
+      wishesList.innerHTML = '<div class="text-center text-red-400 text-xs py-4">Gagal memuat ucapan.</div>';
     }
-
-    wishesData.forEach((wish) => {
-      // Buat elemen HTML untuk setiap ucapan
-      const item = document.createElement("div");
-      item.className = "border-b border-wd-gold/20 pb-4 last:border-0 animation-fade";
-      item.innerHTML = `
-              <div class="flex items-start gap-3">
-                  <div class="w-8 h-8 rounded-full bg-wd-gold/20 text-wd-gold flex items-center justify-center text-xs font-bold font-sans">
-                      ${getInitials(wish.name)}
-                  </div>
-                  <div>
-                      <h4 class="font-bold text-wd-green-dark text-sm font-sans">${escapeHtml(wish.name)}</h4>
-                      <p class="text-gray-400 text-[10px] mb-1"><i class="far fa-clock"></i> ${wish.date}</p>
-                      <p class="text-gray-600 text-sm font-serif italic">"${escapeHtml(wish.message)}"</p>
-                  </div>
-              </div>
-          `;
-      wishesList.prepend(item); // Tambah di paling atas
-    });
   }
 
-  // Helper: Ambil inisial nama
+  // B. Fungsi Menambah Item ke Layar (Helper)
+  function addWishToDOM(name, message, date) {
+    const item = document.createElement("div");
+    item.className = "border-b border-wd-gold/20 pb-4 last:border-0 animation-fade";
+    item.innerHTML = `
+          <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-full bg-wd-gold/20 text-wd-gold flex items-center justify-center text-xs font-bold font-sans">
+                  ${getInitials(name)}
+              </div>
+              <div>
+                  <h4 class="font-bold text-wd-green-dark text-sm font-sans">${escapeHtml(name)}</h4>
+                  <p class="text-gray-400 text-[10px] mb-1"><i class="far fa-clock"></i> ${date}</p>
+                  <p class="text-gray-600 text-sm font-serif italic">"${escapeHtml(message)}"</p>
+              </div>
+          </div>
+      `;
+    wishesList.appendChild(item); // Tambah ke bawah (karena data dari server sudah di-reverse/urutkan)
+  }
+
+  // Helper Functions
   function getInitials(name) {
     return name
-      .match(/(\b\S)?/g)
-      .join("")
-      .match(/(^\S|\S$)?/g)
-      .join("")
-      .toUpperCase();
+      ? name
+          .match(/(\b\S)?/g)
+          .join("")
+          .match(/(^\S|\S$)?/g)
+          .join("")
+          .toUpperCase()
+      : "A";
   }
 
-  // Helper: Mencegah XSS (Keamanan dasar)
   function escapeHtml(text) {
-    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    return text ? text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;") : "";
   }
 
-  // Event Listener Submit Form
+  // C. Event Listener Submit (Kirim Data)
   wishesForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const nameInput = document.getElementById("sender-name");
-    const msgInput = document.getElementById("sender-message");
     const submitBtn = wishesForm.querySelector("button");
     const originalBtnText = submitBtn.innerHTML;
+    const nameInput = document.getElementById("sender-name");
+    const msgInput = document.getElementById("sender-message");
 
-    // 1. Efek Loading
+    // Loading State
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbycHOfdFppRmcEW-DkS65uW_LKgSkKRv7caCPD9EiLH5u-pXG8P-Us7UlSr4_EVoe6DFA/exec";
+    // Format Tanggal Lokal untuk Tampilan Langsung (Instant Feedback)
+    const now = new Date();
+    const dateString = now.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
-    // 2. Kirim Data
     fetch(scriptURL, { method: "POST", body: new FormData(wishesForm) })
       .then((response) => {
-        // --- SUKSES ---
+        // Tambahkan ucapan user sendiri ke layar (paling atas)
+        // Kita gunakan prepend agar muncul paling atas sebelum refresh
+        const item = document.createElement("div");
+        item.className = "border-b border-wd-gold/20 pb-4 last:border-0 animation-fade";
+        item.innerHTML = `
+                  <div class="flex items-start gap-3">
+                      <div class="w-8 h-8 rounded-full bg-wd-gold/20 text-wd-gold flex items-center justify-center text-xs font-bold font-sans">
+                          ${getInitials(nameInput.value)}
+                      </div>
+                      <div>
+                          <h4 class="font-bold text-wd-green-dark text-sm font-sans">${escapeHtml(nameInput.value)}</h4>
+                          <p class="text-gray-400 text-[10px] mb-1"><i class="far fa-clock"></i> ${dateString}</p>
+                          <p class="text-gray-600 text-sm font-serif italic">"${escapeHtml(msgInput.value)}"</p>
+                      </div>
+                  </div>
+              `;
+        wishesList.prepend(item);
 
-        // 1. Ambil waktu saat ini
-        const now = new Date();
-
-        // 2. Format waktu jadi "Tanggal Bulan Tahun, Jam:Menit" (Contoh: 18 Februari 2026, 14:30)
-        const formattedDate = now.toLocaleDateString("id-ID", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-
-        // A. Masukkan data baru ke Array Lokal
-        const newWish = {
-          name: nameInput.value,
-          message: msgInput.value,
-          date: formattedDate, // <--- Pakai variabel tanggal yang sudah diformat
-        };
-
-        wishesData.push(newWish);
-
-        // B. Render ulang list ucapan
-        renderWishes();
-
-        // C. Reset Form
+        // Reset Form
         wishesForm.reset();
-
-        // D. Tampilkan Notifikasi
         showToast("Ucapan berhasil terkirim!");
-
-        // E. Kembalikan Tombol
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnText;
       })
       .catch((error) => {
-        // --- ERROR ---
-        console.error("Error:", error);
-        showToast("Gagal mengirim ucapan. Cek koneksi internet.");
-
-        // Kembalikan Tombol agar bisa coba lagi
+        console.error("Error!", error.message);
+        showToast("Gagal mengirim ucapan.");
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnText;
       });
   });
+
+  // PANGGIL FUNGSI LOAD SAAT HALAMAN DIBUKA
+  loadWishes();
 
   // Render awal saat load
   renderWishes();
